@@ -14,7 +14,15 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
-const port = 3003;
+// Varios de Ambiente
+require('dotenv').config();
+
+const port = process.env.PORT || 3003;
+
+// Inicializaciones
+
+// Conexion a Base de Datos
+require('./config/database');
 
 // Motor de Plantillas
 app.set('view engine', 'ejs');
@@ -23,16 +31,9 @@ app.set('views', path.join(__dirname, '/views'));
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.get('/', (req, res) => {
-    // res.send('<h1>Mi respuesta desde Express!!!</h1>');
-    res.render('index', { titulo: "Mi titulo dinámico" })
-})
-
-app.get('/servicios', (req, res) =>{
-    // res.send('<h1>Hola, estos son nuestros servicios.</h1>')
-    res.render('servicios', { titulo: "Hola, estos son nuestros servicios." })
-})
+// Rutas del APP
+app.use('/', require('./router/Routes'));
+app.use('/mascotas', require('./router/Mascotas'));
 
 // Middleware
 app.use((req, res, next) => {
@@ -40,7 +41,6 @@ app.use((req, res, next) => {
         titulo: 'Ruta de acceso no existe.'
     });
 })
-
 
 app.listen(port, () => {
     console.log('Servidor ahora escuchando en el puerto', port);

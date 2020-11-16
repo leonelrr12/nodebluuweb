@@ -1,0 +1,24 @@
+<%- include("template/header.ejs", {tituloweb: 'Inicio'}) %>
+    <div class="container my-4">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Desctipcion</th>
+                </tr>
+            </thead>
+            <tbody>       
+                <% if (arrayMascotas.length > 0) { %>                         
+                    <% arrayMascotas.forEach(mascota => { %>
+
+                        <tr>
+                            <td><%= mascota.nombre %></td>
+                            <td><%= mascota.descripcion %></td>
+                        </tr>
+                            
+                    <% }) %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+<%- include("template/footer.ejs") %>
