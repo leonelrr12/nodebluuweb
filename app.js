@@ -11,8 +11,10 @@
 
 // HTTP con Express 
 const express = require('express');
-const app = express();
+const bodyParser = require('body-parser');
 const path = require('path');
+
+const app = express();
 
 // Varios de Ambiente
 require('dotenv').config();
@@ -20,6 +22,11 @@ require('dotenv').config();
 const port = process.env.PORT || 3003;
 
 // Inicializaciones
+
+// Parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended: false}));
+// Patse application/json
+app.use(bodyParser.json());
 
 // Conexion a Base de Datos
 require('./config/database');

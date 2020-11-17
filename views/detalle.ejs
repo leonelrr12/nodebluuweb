@@ -1,0 +1,109 @@
+<%- include("template/header.ejs", {tituloweb: 'Modificar - Eliminar'}) %>
+
+    <div class="container">c
+        <h1>Detalles de Mascota</h1>
+
+        <a href="/mascotas" class="btn btn-outline-warning btn-block my-4" type="submit">
+            Regresar
+        </a>
+
+        <% if (error) { %>
+            <p><%= mensaje %></p>
+            <a href="/mascotas" class="btn btn-info btn-md py-3 my-3">Regresar</a>
+        <% } else { %>
+
+            <form id="frmModifica" class="form-group mt-3" data-id=<%= mascota.id %>>
+                <div class="form-inline mb-3">
+                    <label for="nombre" class="col-sm-2 justify-content-start">Nombre</label>
+                    <input 
+                        type="text"
+                        class="form-control col-md-6"
+                        id="nombre"
+                        name="nombre"
+                        value="<%= mascota.nombre %>"
+                    >
+                </div>
+                <div class="form-inline mb-3">
+                    <label for="descripcion" class="col-sm-2 justify-content-start">Descripcion</label>
+                    <input 
+                        type="text"
+                        class="form-control col-md-9"
+                        id="descripcion"
+                        name="descripcion"
+                        value="<%= mascota.descripcion %>"
+                    >
+                </div>
+                <div class="form-group">
+                    <button
+                        type="submit"
+                        class="btn btn-success btn-lg"
+                    >
+                        Guardar Cambios
+                    </button>            
+                </div>
+            </form>
+            <button 
+                id="btnEliminar" 
+                class="btn btn-danger btn-lg py-2 my-2 col-2"
+                data-id=<%= mascota.id %>
+            >Eliminar</button>
+        <% } %>
+
+    </div>
+    
+<%- include("template/footer.ejs") %>
+
+<script>
+
+    const btnEliminar = document.getElementById('btnEliminar');
+
+    btnEliminar.addEventListener('click', async () => {
+        const id = btnEliminar.dataset.id
+
+        try {
+            const data = await fetch(`/mascotas/${id}`, {
+                method: 'delete'
+            })
+            const res = await data.json()
+            if(res.estado) {
+                window.location.href = '/mascotas'
+            } else {
+                console.log(res)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    })
+
+    const frmModifica = document.getElementById('frmModifica')
+
+    frmModifica.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const nombre = frmModifica.elements['nombre'].value;
+        const descripcion = document.getElementById('descripcion').value;
+        const id = frmModifica.dataset.id
+
+        try {
+            const data = await fetch(`/mascotas/${id}`, {
+                method: 'put',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({nombre, descripcion})
+            })
+
+            const res = await data.json();
+
+            if(res.estado) {
+                window.location.href = '/mascotas'
+            } else {
+                console.log(res)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    })
+
+</script>

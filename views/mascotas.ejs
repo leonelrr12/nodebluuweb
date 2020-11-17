@@ -1,19 +1,37 @@
 <%- include("template/header.ejs", {tituloweb: 'Inicio'}) %>
-    <div class="container my-4">
+
+    <div class="container my-2">
+
+        <h1>CRUD Mongo</h1>
+
+        <a href="/mascotas/crear" class="btn btn-primary btn-block my-4" type="submit">
+            Crear nueva Mascota
+        </a>
+
         <table class="table">
             <thead class="thead-light">
                 <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Desctipcion</th>
+                    <th scope="col" class="d-none">ID</th>
+                    <th scope="col">##</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Desctipcion</th>
+                    <th scope="col">Accion</th>
                 </tr>
             </thead>
             <tbody>       
-                <% if (arrayMascotas.length > 0) { %>                         
-                    <% arrayMascotas.forEach(mascota => { %>
+                <% if (arrayMascotas.length > 0) { linea = 0; %>                         
+                    <% arrayMascotas.forEach(mascota => { linea++; %>
 
                         <tr>
+                            <td class="d-none"><%= mascota.id %></td>
+                            <th scope="col"><%= linea %></td>
                             <td><%= mascota.nombre %></td>
                             <td><%= mascota.descripcion %></td>
+                            <td>
+                                <a href="mascotas/<%= mascota.id %>"
+                                    class="btn btn-danger btn-md"
+                                >Editar</a>
+                            </td>
                         </tr>
                             
                     <% }) %>
@@ -21,4 +39,5 @@
             </tbody>
         </table>
     </div>
+
 <%- include("template/footer.ejs") %>
